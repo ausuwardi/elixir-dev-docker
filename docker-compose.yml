@@ -1,0 +1,17 @@
+version: '3'
+services:
+  nvim:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        C_UID: 1002
+        C_GID: 1002
+    image: anes/elixirdev
+    volumes:
+      - ./code:/workspace/code
+      - ./local:/workspace/.local
+    command:
+      - tail
+      - -f
+      - /dev/null
