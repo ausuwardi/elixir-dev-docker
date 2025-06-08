@@ -77,7 +77,7 @@ require('packer').startup(function(use)
     requires = {
       'nvim-tree/nvim-web-devicons',
     },
-    tag = 'nightly'
+    tag = 'v1.12.0'
   }
 
   -- Toggleterm
@@ -214,9 +214,9 @@ require('Comment').setup()
 
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- See `:help indent_blankline.txt`
-require('indent_blankline').setup {
-  char = '┊',
-  show_trailing_blankline_indent = false,
+require('ibl').setup {
+--  char = '┊',
+--  show_trailing_blankline_indent = false,
 }
 
 -- Gitsigns
@@ -399,10 +399,14 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 for _, lsp in ipairs(servers) do
-  require('lspconfig')[lsp].setup {
+  local config = {
     on_attach = on_attach,
-    capabilities = capabilities,
+    capabilities = capabilities
   }
+  if lsp == 'elixirls' then
+    config.cmd = { 'elixir-ls' }
+  end
+  require('lspconfig')[lsp].setup(config)
 end
 
 -- Turn on lsp status information
